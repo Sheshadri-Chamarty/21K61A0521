@@ -77,23 +77,27 @@ app.listen(port, () => {
 })
 
 app.get("/categories/:category/products/:productId", async (req, res) => {
-  const productId = req.params.productId
-  const token = await axios.post(`http://20.244.56.144/test/auth`, {
-    companyName: "oneShop",
-    clientID: "7d3bb727-e0dd-47df-a98d-f002df4957be",
-    clientSecret: "bcNWIUYFhWWshndy",
-    ownerName: "Sheshadri",
-    ownerEmail: "sheshadri.chamarty@sasi.ac.in",
-    rollNo: "21K61A0521",
-  })
-  const company = productId.split("-")[0]
-  const category = productId.split("-")[1]
-  const productName = productId.split("-")[2]
-  const response = await axios.get(
-    `http://20.244.56.144/test/companies/${company}/categories/${category}/products`
-  )
-  const data = response.data.find(
-    (product) => product.productName === productName
-  )
-  res.send(data)
+  try {
+    const productId = req.params.productId
+    const token = await axios.post(`http://20.244.56.144/test/auth`, {
+      companyName: "oneShop",
+      clientID: "7d3bb727-e0dd-47df-a98d-f002df4957be",
+      clientSecret: "bcNWIUYFhWWshndy",
+      ownerName: "Sheshadri",
+      ownerEmail: "sheshadri.chamarty@sasi.ac.in",
+      rollNo: "21K61A0521",
+    })
+    const company = productId.split("-")[0]
+    const category = productId.split("-")[1]
+    const productName = productId.split("-")[2]
+    const response = await axios.get(
+      `http://20.244.56.144/test/companies/${company}/categories/${category}/products`
+    )
+    const data = response.data.find(
+      (product) => product.productName === productName
+    )
+    res.send(data)
+  } catch (error) {
+    res.send("please try again")
+  }
 })
