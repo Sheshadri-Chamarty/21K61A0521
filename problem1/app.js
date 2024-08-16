@@ -45,46 +45,50 @@ function mergeSortedListsUnique(list1, list2) {
 }
 
 app.get("/numbers/:numberid", async (req, res) => {
-  const numberid = req.params.numberid
-  const token = await axios.post(`http://20.244.56.144/test/auth`, {
-    companyName: "oneShop",
-    clientID: "7d3bb727-e0dd-47df-a98d-f002df4957be",
-    clientSecret: "bcNWIUYFhWWshndy",
-    ownerName: "Sheshadri",
-    ownerEmail: "sheshadri.chamarty@sasi.ac.in",
-    rollNo: "21K61A0521",
-  })
-  const dict = {
-    e: "even",
-    f: "fibo",
-    p: "primes",
-    r: "rand",
-  }
-  const response = await axios.get(
-    `http://20.244.56.144/test/${dict[numberid]}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token.data.access_token}`,
-      },
-    }
-  )
-  const responseObject = {
-    numbers: response.data.numbers,
-    windowPrevState: numbers,
-  }
-  numbers = mergeSortedListsUnique(numbers, response.data.numbers)
-  if (numbers.length > window_size) {
-    numbers = numbers.slice(-window_size)
-  }
-  numbers.sort((a, b) => a - b)
-  responseObject.windowCurrState = numbers
-  responseObject.avg = numbers.reduce((a, b) => a + b, 0) / numbers.length
-  // console.log(responseObject)
-  res.send(
-    JSON.stringify({
-      ...responseObject,
+  try {
+    const numberid = req.params.numberid
+    const token = await axios.post(`http://20.244.56.144/test/auth`, {
+      companyName: "oneShop",
+      clientID: "7d3bb727-e0dd-47df-a98d-f002df4957be",
+      clientSecret: "bcNWIUYFhWWshndy",
+      ownerName: "Sheshadri",
+      ownerEmail: "sheshadri.chamarty@sasi.ac.in",
+      rollNo: "21K61A0521",
     })
-  )
+    const dict = {
+      e: "even",
+      f: "fibo",
+      p: "primes",
+      r: "rand",
+    }
+    const response = await axios.get(
+      `http://20.244.56.144/test/${dict[numberid]}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token.data.access_token}`,
+        },
+      }
+    )
+    const responseObject = {
+      numbers: response.data.numbers,
+      windowPrevState: numbers,
+    }
+    numbers = mergeSortedListsUnique(numbers, response.data.numbers)
+    if (numbers.length > window_size) {
+      numbers = numbers.slice(-window_size)
+    }
+    numbers.sort((a, b) => a - b)
+    responseObject.windowCurrState = numbers
+    responseObject.avg = numbers.reduce((a, b) => a + b, 0) / numbers.length
+    // console.log(responseObject)
+    res.send(
+      JSON.stringify({
+        ...responseObject,
+      })
+    )
+  } catch (err) {
+    res.send("please try again")
+  }
 })
 
 app.use((req, res) => {
