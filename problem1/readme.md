@@ -30,4 +30,4 @@ The `app.js` file may have dependencies on other modules or libraries. Make sure
 
 The output of the application can be found in the `output.png` file. Make sure to check this file after running the application to view the desired output.
 
-![output image](https://github.com/[Sheshadri-Chamarty]/[21K61A0521]/blob/[main]/problem1/output.png?raw=true)
+![output image](https://github.com/Sheshadri-Chamarty/21K61A0521/blob/main/problem1/output.png?raw=true)
